@@ -49,8 +49,25 @@ public_users.get('/author/:author',function (req, res) {
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const title = req.params.title.toLowerCase()
+  let bookByTitle = {}
+  for (let isbn in books){
+    let book = books[isbn].title.toLowerCase().split(',')
+    if (book.length > 1){               // for filtering mutiple books
+        for (bookIndex in book){
+            if (book[bookIndex].trim() === title.trim()){
+                let selectedBook =structuredClone(books[isbn])
+                selectedBook.title = book[bookIndex]
+                bookByTitle[isbn] = selectedBook
+            }
+        }
+    } else {
+        if (books[isbn].title.toLowerCase() === title.trim()){
+            bookByTitle[isbn] = structuredClone(books[isbn])
+        }
+    }
+  }
+  return res.status(300).json({bookByTitle});
 });
 
 //  Get book review
