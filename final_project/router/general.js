@@ -7,12 +7,12 @@ const public_users = express.Router();
 
 public_users.post("/register", (req,res) => {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  return res.status(200).json({message: "Yet to be implemented"});
 });
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  return res.status(300).json({books});
+  return res.status(200).json({books});
 });
 
 // Get book details based on ISBN
@@ -67,13 +67,34 @@ public_users.get('/title/:title',function (req, res) {
         }
     }
   }
-  return res.status(300).json({bookByTitle});
+  if (Object.keys(bookByTitle).length > 0){
+    return res.status(200).json({bookByTitle});
+  } else {
+    return res.status(404).json({message: "book not found"})
+  }
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const isbn = parseInt(req.params.isbn)
+  let reviewByIsbn = {}
+  let reviewCout
+  if (isbn in books){
+    for (let id in books){
+        if (parseInt(id) === isbn){
+            reviewByIsbn = structuredClone(books[id])
+            reviewCout = Object.keys(reviewByIsbn.reviews).length
+            }   
+      }
+  } else{
+      re
+  }
+  
+  if (reviewCout > 0){
+    return res.status(200).json({reviewByIsbn});
+  } else {
+    return res.status(404).json({message: "Not reviewed yet"})
+  }
 });
 
 module.exports.general = public_users;
