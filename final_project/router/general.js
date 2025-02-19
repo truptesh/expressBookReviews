@@ -87,7 +87,7 @@ public_users.get('/review/:isbn',function (req, res) {
             }   
       }
   } else{
-      re
+      return res.status(404).json({message: "Enter valid ISBN"})
   }
   
   if (reviewCout > 0){
