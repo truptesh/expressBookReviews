@@ -26,34 +26,57 @@ if (existUser.length < 1){
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-//   return res.status(200).json({books});
+  return res.status(200).json({books})
 
   // ---------  for task 10 --------------
-  let allBooks = new Promise((resolve, reject) => {
-    resolve(books)
-  })
-  allBooks.then((data) => {
-    return res.status(200).json({data});
-}) 
+//   let allBooks = new Promise((resolve, reject) => {
+//     resolve(books)
+//   })
+//   allBooks.then((data) => {
+//     return res.status(200).json({data});
+// }) 
 // ------- end of task 10 ---------
 });
-
 
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   const isbn = parseInt(req.params.isbn)
   let bookByIsbn = {}
- Object.keys(books).forEach((book) => {
-    if(parseInt(book) === isbn){
-        Object.assign(bookByIsbn, structuredClone(books[book]))
+
+//  Object.keys(books).forEach((book) => {
+//     if(parseInt(book) === isbn){
+//         Object.assign(bookByIsbn, structuredClone(books[book]))
+//     }
+//  })
+//  if (Object.keys(bookByIsbn).length > 0) {
+//     return res.status(200).json({bookByIsbn});
+// } else {
+//     return res.status(404).json({message: "Book not found"})
+// }
+
+// --------- for task 11 -------------
+let data = new Promise((resolve, reject) => {
+    Object.keys(books).forEach((book) => {
+        if(parseInt(book) === isbn){
+            Object.assign(bookByIsbn, structuredClone(books[book]))
+        }
+    })
+
+    if (Object.keys(bookByIsbn).length > 0) {
+        return resolve(bookByIsbn)
     }
- })
- if (Object.keys(bookByIsbn).length > 0) {
-    return res.status(200).json({bookByIsbn});
-} else {
-    return res.status(404).json({message: "Book not found"})
-}
+
+    return reject(new Error("Book not found"))
+    })
+
+    data.then(resultBooks => {
+        return res.status(200).json({resultBooks})
+    })
+    .catch(err => {
+        return res.status(404).json({message: err.message}) 
+    })
+    // ------------ end of task 11 --------------
  });
   
 // Get book details based on author
