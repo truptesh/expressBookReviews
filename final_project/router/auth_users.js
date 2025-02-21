@@ -44,19 +44,20 @@ regd_users.post("/login", (req,res) => {
 regd_users.put("/auth/review/:isbn", (req, res) => {
     const isbn = parseInt(req.params.isbn)
     const review = req.query.review
-    const user = req.user
 
     try{
-         for (let id in books){
+        for (let id in books){
         if (parseInt(id) === isbn){
-            
-        } else {
-            return res.status(404).json({message: "book not found"})
+            books[id].reviews[req.user] = review
+            return res.status(200).json({message: "book's review has been modified", ReviewedBooks: books})
         }
     }
     } catch (err) {
-        return res.status(409).json({message: "enter valid isbn"})
+        if (!(isbn in books)){
+            return res.status(404).json({message: "enter"})
+        }
     }
+           
 });
 
 module.exports.authenticated = regd_users;
