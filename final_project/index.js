@@ -14,9 +14,10 @@ app.use("/customer/auth/*", function auth(req,res,next){
 //Write the authenication mechanism here
 if (req.session.authorization){
     const token  = req.session.authorization['accessToken']
-    jwt.verify(token, "JWTsecret", (err, user) => {
+    const user = req.session.authorization["username"]
+    jwt.verify(token, "JWTsecret", (err, data) => {
         if (!err){
-            req.user = user.data
+            req.user = user
             next()
         } else {
             return res.status(403).json({message: "something went wrong this token"})
