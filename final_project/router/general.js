@@ -24,12 +24,21 @@ if (existUser.length < 1){
 }
 });
 
-
-
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  return res.status(200).json({books});
+//   return res.status(200).json({books});
+
+  // ---------  for task 10 --------------
+  let allBooks = new Promise((resolve, reject) => {
+    resolve(books)
+  })
+  allBooks.then((data) => {
+    return res.status(200).json({data});
+}) 
+// ------- end of task 10 ---------
 });
+
+
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
