@@ -29,7 +29,7 @@ regd_users.post("/login", (req,res) => {
   if (isValid(username)){
     if (authenticatedUser(username, password)){
         const accessToken = jwt.sign({data: password}, "JWTsecret", {expiresIn: 60 * 60})
-        // req.session.authorization = accessToken, username
+        req.session.authorization = accessToken, username
         return res.status(200).json({message: "user successfullt logged in."})
     } else {
         return res.status(403).json({message: "password must be correct"})
