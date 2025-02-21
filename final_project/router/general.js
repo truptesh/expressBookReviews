@@ -122,6 +122,7 @@ public_users.get('/author/:author',function (req, res) {
 public_users.get('/title/:title',function (req, res) {
   const title = req.params.title.toLowerCase()
   let bookByTitle = {}
+
   for (let isbn in books){
     let book = books[isbn].title.toLowerCase().split(',')
     if (book.length > 1){               // for filtering mutiple books
@@ -143,6 +144,39 @@ public_users.get('/title/:title',function (req, res) {
   } else {
     return res.status(404).json({message: "book not found"})
   }
+
+  // ---------- for task 13 -------------
+//   const data = new Promise((resolve, reject) => {
+//     for (let isbn in books){
+//         let book = books[isbn].title.toLowerCase().split(',')
+//         if (book.length > 1){               // for filtering mutiple books
+//             for (bookIndex in book){
+//                 if (book[bookIndex].trim() === title.trim()){
+//                     let selectedBook =structuredClone(books[isbn])
+//                     selectedBook.title = book[bookIndex]
+//                     bookByTitle[isbn] = selectedBook
+//                 }
+//             }
+//         } else {
+//             if (books[isbn].title.toLowerCase() === title.trim()){
+//                 bookByTitle[isbn] = structuredClone(books[isbn])
+//             }
+//         }
+//     }
+//     if (Object.keys(bookByTitle).length > 0){
+//         return resolve(bookByTitle)
+//       }
+      
+//       return reject(new Error("book not found"))
+//   })
+
+//   data.then(resultData => {
+//     return res.status(200).json({resultData})
+//   })
+//   .catch(err => {
+//     return res.status(404).json({message: err.message})
+//   })
+    // ---------- end of task 13 -----------
 });
 
 //  Get book review
