@@ -44,38 +44,38 @@ public_users.get('/isbn/:isbn',function (req, res) {
   const isbn = parseInt(req.params.isbn)
   let bookByIsbn = {}
 
-//  Object.keys(books).forEach((book) => {
-//     if(parseInt(book) === isbn){
-//         Object.assign(bookByIsbn, structuredClone(books[book]))
-//     }
-//  })
-//  if (Object.keys(bookByIsbn).length > 0) {
-//     return res.status(200).json({bookByIsbn});
-// } else {
-//     return res.status(404).json({message: "Book not found"})
-// }
+ Object.keys(books).forEach((book) => {
+    if(parseInt(book) === isbn){
+        Object.assign(bookByIsbn, structuredClone(books[book]))
+    }
+ })
+ if (Object.keys(bookByIsbn).length > 0) {
+    return res.status(200).json({bookByIsbn});
+} else {
+    return res.status(404).json({message: "Book not found"})
+}
 
 // --------- for task 11 -------------
-let data = new Promise((resolve, reject) => {
-    Object.keys(books).forEach((book) => {
-        if(parseInt(book) === isbn){
-            Object.assign(bookByIsbn, structuredClone(books[book]))
-        }
-    })
+// let data = new Promise((resolve, reject) => {
+//     Object.keys(books).forEach((book) => {
+//         if(parseInt(book) === isbn){
+//             Object.assign(bookByIsbn, structuredClone(books[book]))
+//         }
+//     })
 
-    if (Object.keys(bookByIsbn).length > 0) {
-        return resolve(bookByIsbn)
-    }
+//     if (Object.keys(bookByIsbn).length > 0) {
+//         return resolve(bookByIsbn)
+//     }
 
-    return reject(new Error("Book not found"))
-    })
+//     return reject(new Error("Book not found"))
+//     })
 
-    data.then(resultBooks => {
-        return res.status(200).json({resultBooks})
-    })
-    .catch(err => {
-        return res.status(404).json({message: err.message}) 
-    })
+//     data.then(resultBooks => {
+//         return res.status(200).json({resultBooks})
+//     })
+//     .catch(err => {
+//         return res.status(404).json({message: err.message}) 
+//     })
     // ------------ end of task 11 --------------
  });
   
@@ -83,6 +83,7 @@ let data = new Promise((resolve, reject) => {
 public_users.get('/author/:author',function (req, res) {
     const author = req.params.author.toLowerCase()
   let bookByAuthor = {}
+
   for (let isbn in books){
     if (books[isbn].author.toLowerCase() === author.trim()){
         bookByAuthor[isbn] = structuredClone(books[isbn])
@@ -93,6 +94,28 @@ public_users.get('/author/:author',function (req, res) {
   } else {
     return res.status(404).json({message: "Book not found"})
   }
+
+  // -------- for task 12 -----------
+//   const data = new Promise((resolve, reject) => {
+//     for (let isbn in books){
+//         if (books[isbn].author.toLowerCase() === author.trim()){
+//             bookByAuthor[isbn] = structuredClone(books[isbn])
+//         }
+//       }
+//       if (Object.keys(bookByAuthor).length > 0){
+//         return resolve(bookByAuthor)
+//       }
+    
+//     return reject(new Error("book not found"))
+//   })
+
+//   data.then(resultData => {
+//     return res.status(200).json({resultData})
+//   })
+//   .catch(err => {
+//     return res.status(404).json({message: err.message})
+//   })
+    // --------- end of task 12 ------------
 });
 
 // Get all books based on title
